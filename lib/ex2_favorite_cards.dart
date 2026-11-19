@@ -12,10 +12,75 @@ void main() => runApp(MaterialApp(
         ),
         body: Column(
           children: [
-            Container(
-                // YOUR CODE
-                )
+            FavoriteCard(isFavorite: true),
+            FavoriteCard(isFavorite: false),
+            FavoriteCard(isFavorite: true),
           ],
         ),
       ),
     ));
+
+class FavoriteCard extends StatefulWidget {
+  const FavoriteCard({super.key, required this.isFavorite});
+
+  final bool isFavorite;
+
+  @override
+  State<FavoriteCard> createState() => _FavoriteCardState();
+}
+
+class _FavoriteCardState extends State<FavoriteCard> {
+  late bool _isFavorite;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _isFavorite = widget.isFavorite;
+  }
+
+  IconData get heartIcon =>
+      _isFavorite ? Icons.favorite : Icons.favorite_border;
+
+  Color get heartColor => _isFavorite ? Colors.red : Colors.grey;
+
+  void _toggleFavorite() {
+    setState(() {
+      _isFavorite = !_isFavorite;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Colors.grey, width: 0.5),
+        ),
+      ),
+      child: Row(
+        children: [
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Title",
+                  style: TextStyle(
+                    color: Colors.blue,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text("description"),
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: _toggleFavorite,
+            icon: Icon(heartIcon, color: heartColor),
+            ),
+        ],
+      ),
+    );
+  }
+}
